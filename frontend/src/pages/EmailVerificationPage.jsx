@@ -10,7 +10,11 @@ const EmailVerificationPages = () => {
   const isLoading = false;
 
   const handleChange = () => {};
-  const handleKeyDown = () => {};
+  const handleKeyDown = (index, e) => {
+    if (e.key === "Backspace" && !code[index] && index > 0) {
+      inputRefs.current[index - 1].focus();
+    }
+  };
   const handleSubmit = () => {};
 
   return (
