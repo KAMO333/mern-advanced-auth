@@ -8,6 +8,7 @@ import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import EmailVerificationPage from "./pages/EmailVerificationPage";
 import Dashboard from "./pages/Dashboard";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 // protect routes that require authentication
 const ProtectedRoute = ({ children }) => {
@@ -42,8 +43,7 @@ function App() {
     checkAuth();
   }, [checkAuth]);
 
-  console.log("isauthenticated", isAuthenticated);
-  console.log("user: ", user);
+  if (isCheckingAuth) return <LoadingSpinner />;
 
   return (
     <div
