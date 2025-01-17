@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/authStore";
 
-const EmailVerificationPages = () => {
+const EmailVerificationPage = () => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef([]);
   const navigate = useNavigate();
@@ -109,4 +109,4 @@ const EmailVerificationPages = () => {
   );
 };
 
-export default EmailVerificationPages;
+export default EmailVerificationPage;
