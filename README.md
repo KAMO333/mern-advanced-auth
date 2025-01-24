@@ -1,4 +1,4 @@
-<h1 align="center">Advanced Auth 🔒 </h1>
+<h1 align="center">Advanced Authentication System 🔒 </h1>
 
 About This Project:
 
