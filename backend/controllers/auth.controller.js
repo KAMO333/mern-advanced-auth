@@ -6,7 +6,7 @@ import {
   sendWelcomeEmail,
   sendPasswordResetEmail,
   sendResetSuccessEmail,
-} from "../mailtrap/emails.js";
+} from "../nodemailer/emails.js";
 import { User } from "../models/user.model.js";
 
 export const signup = async (req, res) => {
@@ -28,7 +28,7 @@ export const signup = async (req, res) => {
 
     const hashedPassword = await bcryptjs.hash(password, 10);
     const verificationToken = Math.floor(
-      100000 + Math.random() * 900000
+      100000 + Math.random() * 900000,
     ).toString();
 
     const user = new User({
@@ -158,7 +158,7 @@ export const forgotPassword = async (req, res) => {
     // send email
     await sendPasswordResetEmail(
       user.email,
-      `${process.env.CLIENT_URL}/reset-password/${resetToken}`
+      `${process.env.CLIENT_URL}/reset-password/${resetToken}`,
     );
 
     res.status(200).json({
