@@ -36,47 +36,54 @@ export const sendVerificationEmail = async (email, verificationToken) => {
 
 export const sendWelcomeEmail = async (email, name) => {
   try {
-    const response = await transporter.sendMail({
-      from: `"${sender.name}" <${sender.email}>`,
-      to: email,
+    const result = await client.transactionalEmails.sendTransacEmail({
       subject: "Welcome to Auth Company",
-      html: WELCOME_EMAIL_TEMPLATE.replace(/{name}/g, name),
+      htmlContent: WELCOME_EMAIL_TEMPLATE.replace(/{name}/g, name),
+      sender: { name: sender.name, email: sender.email },
+      to: [{ email: email }],
     });
-
-    console.log("Welcome email sent successfully", response.messageId);
+    console.log("Welcome email sent successfully:", JSON.stringify(result));
   } catch (error) {
-    console.error(`Error sending welcome email`, error);
+    console.error("Error sending welcome email:", error);
     throw new Error(`Error sending welcome email: ${error}`);
   }
 };
 
 export const sendPasswordResetEmail = async (email, resetURL) => {
   try {
-    const response = await transporter.sendMail({
-      from: `"${sender.name}" <${sender.email}>`,
-      to: email,
+    const result = await client.transactionalEmails.sendTransacEmail({
       subject: "Reset your password",
-      html: PASSWORD_RESET_REQUEST_TEMPLATE.replace("{resetURL}", resetURL),
+      htmlContent: PASSWORD_RESET_REQUEST_TEMPLATE.replace(
+        "{resetURL}",
+        resetURL,
+      ),
+      sender: { name: sender.name, email: sender.email },
+      to: [{ email: email }],
     });
-    console.log("Password reset email sent successfully", response.messageId);
+    console.log(
+      "Password reset email sent successfully:",
+      JSON.stringify(result),
+    );
   } catch (error) {
-    console.error(`Error sending password reset email`, error);
+    console.error("Error sending password reset email:", error);
     throw new Error(`Error sending password reset email: ${error}`);
   }
 };
 
 export const sendResetSuccessEmail = async (email) => {
   try {
-    const response = await transporter.sendMail({
-      from: `"${sender.name}" <${sender.email}>`,
-      to: email,
+    const result = await client.transactionalEmails.sendTransacEmail({
       subject: "Password Reset Successful",
-      html: PASSWORD_RESET_SUCCESS_TEMPLATE,
+      htmlContent: PASSWORD_RESET_SUCCESS_TEMPLATE,
+      sender: { name: sender.name, email: sender.email },
+      to: [{ email: email }],
     });
-
-    console.log("Password reset success email sent", response.messageId);
+    console.log(
+      "Reset success email sent successfully:",
+      JSON.stringify(result),
+    );
   } catch (error) {
-    console.error(`Error sending password reset success email`, error);
-    throw new Error(`Error sending password reset success email: ${error}`);
+    console.error("Error sending reset success email:", error);
+    throw new Error(`Error sending reset success email: ${error}`);
   }
 };
