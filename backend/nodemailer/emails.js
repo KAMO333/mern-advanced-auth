@@ -2,6 +2,7 @@ import {
   PASSWORD_RESET_REQUEST_TEMPLATE,
   PASSWORD_RESET_SUCCESS_TEMPLATE,
   VERIFICATION_EMAIL_TEMPLATE,
+  WELCOME_EMAIL_TEMPLATE,
 } from "./emailTemplates.js";
 import { transporter, sender } from "./nodemailer.config.js";
 
@@ -25,23 +26,17 @@ export const sendVerificationEmail = async (email, verificationToken) => {
 };
 
 export const sendWelcomeEmail = async (email, name) => {
-  const recipient = [{ email }];
-
   try {
-    const response = await mailtrapClient.send({
-      from: sender,
-      to: recipient,
-      template_uuid: "f61f3848-1ac7-4822-b2fb-2fbb9000454c",
-      template_variables: {
-        company_info_name: "Auth Company",
-        name: name,
-      },
+    const response = await transporter.sendMail({
+      from: `"${sender.name}" <${sender.email}>`,
+      to: email,
+      subject: "Welcome to Auth Company",
+      html: WELCOME_EMAIL_TEMPLATE.replace(/{name}/g, name),
     });
 
-    console.log("Welcome email sent successfully", response);
+    console.log("Welcome email sent successfully", response.messageId);
   } catch (error) {
     console.error(`Error sending welcome email`, error);
-
     throw new Error(`Error sending welcome email: ${error}`);
   }
 };
