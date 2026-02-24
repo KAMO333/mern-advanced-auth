@@ -1,20 +1,9 @@
-import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-export const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  connectionTimeout: 10000,
-});
-
+// We only need the sender info and export the API key for emails.js
 export const sender = {
-  email: process.env.EMAIL_USER,
+  email: process.env.EMAIL_USER, // Ensure this is your verified Brevo sender email
   name: "Kamogelo Mmopane",
 };

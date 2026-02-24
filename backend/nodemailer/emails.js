@@ -1,26 +1,35 @@
+import { BrevoClient } from "@getbrevo/brevo"; // Standard for v4.x
 import {
   PASSWORD_RESET_REQUEST_TEMPLATE,
   PASSWORD_RESET_SUCCESS_TEMPLATE,
   VERIFICATION_EMAIL_TEMPLATE,
   WELCOME_EMAIL_TEMPLATE,
 } from "./emailTemplates.js";
-import { transporter, sender } from "./nodemailer.config.js";
+import { sender } from "./nodemailer.config.js";
+
+// Initialize the single Brevo client
+const client = new BrevoClient({
+  apiKey: process.env.BREVO_API_KEY,
+});
 
 export const sendVerificationEmail = async (email, verificationToken) => {
   try {
-    const response = await transporter.sendMail({
-      from: `"${sender.name}" <${sender.email}>`,
-      to: email,
+    const result = await client.transactionalEmails.sendTransacEmail({
       subject: "Verify your email",
-      html: VERIFICATION_EMAIL_TEMPLATE.replace(
+      htmlContent: VERIFICATION_EMAIL_TEMPLATE.replace(
         "{verificationCode}",
         verificationToken,
       ),
+      sender: {
+        name: sender.name,
+        email: sender.email,
+      },
+      to: [{ email: email }],
     });
 
-    console.log("Email sent successfully", response.messageId);
+    console.log("Brevo API success:", JSON.stringify(result));
   } catch (error) {
-    console.error(`Error sending verification`, error);
+    console.error("Brevo API error:", error);
     throw new Error(`Error sending verification email: ${error}`);
   }
 };
