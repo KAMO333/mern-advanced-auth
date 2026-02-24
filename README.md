@@ -44,9 +44,8 @@ MONGO_URI=your_mongo_uri
 PORT=5000
 JWT_SECRET=your_secret_key
 NODE_ENV=development
-
-MAILTRAP_TOKEN=your_mailtrap_token
-
+EMAIL_USER=brevo-verified-email
+BREVO_API_KEY=your-brevo-api-key
 CLIENT_URL=http://localhost:5173
 ```
 
@@ -82,9 +81,8 @@ MONGO_URI=your_mongo_uri
 PORT=5000
 JWT_SECRET=your_secret_key
 NODE_ENV=development
-
-MAILTRAP_TOKEN=your_mailtrap_token
-
+EMAIL_USER=brevo-verified-email
+BREVO_API_KEY=your-brevo-api-key
 CLIENT_URL=http://localhost:5173
 ```
 
