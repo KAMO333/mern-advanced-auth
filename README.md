@@ -1,129 +1,76 @@
-<h1 align="center">Advanced Authentication System 🔒 </h1>
+# Advanced Authentication System 🔒
 
-About This Project:
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
 
-- 🔧 Backend Setup
-- 🗄️ Database Setup
-- 🔐 Signup Endpoint
-- 📧 Sending Verify Account Email
-- 🔍 Verify Email Endpoint
-- 📄 Building a Welcome Email Template
-- 🚪 Logout Endpoint
-- 🔑 Login Endpoint
-- 🔄 Forgot Password Endpoint
-- 🔁 Reset Password Endpoint
-- ✔️ Check Auth Endpoint
-- 🌐 Frontend Setup
-- 📋 Signup Page UI
-- 🔓 Login Page UI
-- ✅ Email Verification Page UI
-- 📤 Implementing Signup
-- 📧 Implementing Email Verification
-- 🔒 Protecting Our Routes
-- 🔑 Implementing Login
-- 🏠 Dashboard Page
-- 🔄 Implementing Forgot Password
-- 🚀 Super Detailed Deployment
+### About This Project
+
+A full-stack MERN (MongoDB, Express, React, Node) Authentication system engineered with an "Industrial-grade" workflow. It features secure JWT handling, automated email service integration, and a containerized deployment pipeline.
+
+### 🚀 Industrial Upgrades
+
+- **Dockerized Infrastructure**: Entire application is containerized for environment parity across development and production.
+- **CI/CD Pipeline**: Integrated GitHub Actions to automate build checks and testing on every push.
+- **Automated Unit Testing**: Robust test suite using Jest to verify JWT logic, password hashing, and core auth utilities.
+
+---
 
 ### Prerequisites
 
-Before you begin, make sure you have the following installed:
-
-- [Node.js](https://nodejs.org/) (v16+ recommended)
-- [npm](https://www.npmjs.com/) or Yarn
+- [Node.js](https://nodejs.org/) (v18+ recommended)
+- [Docker](https://www.docker.com/) (for containerized execution)
 - A running MongoDB instance (local or cloud)
 
 ---
 
 ### Configuration
 
-Create a `.env` file in the `backend` folder with the following variables:
+Create a `.env` file in the root directory with the following variables:
 
 ```bash
 MONGO_URI=your_mongo_uri
 PORT=5000
 JWT_SECRET=your_secret_key
 NODE_ENV=development
-EMAIL_USER=brevo-verified-email
 BREVO_API_KEY=your-brevo-api-key
 CLIENT_URL=http://localhost:5173
 ```
 
-You can point `CLIENT_URL` to the deployment address when pushing to production.
+## 🐳 Docker Execution
 
-### Installing Dependencies
-
-This monorepo contains two separate Node projects:
-
-1. **Backend** – an Express.js API using MongoDB
-2. **Frontend** – a React application bootstrapped with Vite and styled with Tailwind
-
-Install the dependencies for both from the project root:
+Run the entire system in an isolated environment with a single command:
 
 ```bash
-# from the root of the repo
-npm install            # installs root scripts and devDependencies
-npm run install:all    # convenience script (same as below)
+# Build the image
+docker build -t auth-system .
 
-# or run manually
-cd backend && npm install
-cd ../frontend && npm install
+# Run the container
+docker run -p 5000:5000 --env-file .env auth-system
 ```
 
-> The root `package.json` includes a `build` script that also installs frontend dependencies automatically.
+## 🧪 Automated Testing
 
-### Configuration
-
-Create a `.env` file in the `backend` folder with the following variables:
+Verify the core authentication logic locally using Jest:
 
 ```bash
-MONGO_URI=your_mongo_uri
-PORT=5000
-JWT_SECRET=your_secret_key
-NODE_ENV=development
-EMAIL_USER=brevo-verified-email
-BREVO_API_KEY=your-brevo-api-key
-CLIENT_URL=http://localhost:5173
+npm test
 ```
 
-You can point `CLIENT_URL` to the deployment address when pushing to production.
+Current tests cover: JWT Generation, Bcrypt Password Hashing, Email Format Validation, and Reset Token Integrity.
 
-### Running the app locally
+## Available Scripts
 
-Start the server and the client in separate terminals:
+| Script          | What it does                                                        |
+| --------------- | ------------------------------------------------------------------- |
+| `npm run dev`   | Starts both backend (nodemon) and frontend (Vite) in dev mode       |
+| `npm run start` | Starts the backend server in production mode                        |
+| `npm run test`  | Runs the Jest test suite with ESM support                           |
+| `npm run build` | Builds the React app and prepares the backend to serve static files |
 
-```bash
-# terminal 1 - backend
-cd backend
-npm run start
-
-# terminal 2 - frontend
-cd frontend
-npm run dev
-```
-
-After the frontend build completes you can also serve the production bundle with:
-
-```bash
-# from root
-npm run build         # builds both apps (see package.json scripts)
-npm run start         # starts the backend which serves the built frontend
-```
-
-### Available Scripts
-
-All runnable commands are defined in the root `package.json`; running them from the root will automatically execute the right script in the appropriate subfolder.
-
-| Script                | What it does                                                                        |
-| --------------------- | ----------------------------------------------------------------------------------- |
-| `npm run dev`         | Starts both backend (`nodemon`) and frontend (Vite) in dev mode                     |
-| `npm run start`       | Starts the backend server in production mode                                        |
-| `npm run build`       | Installs frontend deps & builds the React app; output is copied to `backend/public` |
-| `npm run install:all` | Installs dependencies for both backend and frontend                                 |
-
-You can also navigate into `backend` or `frontend` and run `npm run` commands directly if you prefer.
-
-### API Endpoints
+## API Endpoints
 
 The backend exposes the following endpoints under `/api/auth`:
 
@@ -132,44 +79,24 @@ The backend exposes the following endpoints under `/api/auth`:
 | `/signup`          | POST   | Register new user                |
 | `/login`           | POST   | Obtain JWT cookie                |
 | `/logout`          | GET    | Clear authentication cookie      |
-| `/verify-email`    | GET    | Verify account via token         |
+| `/verify-email`    | POST   | Verify account via token         |
 | `/forgot-password` | POST   | Request password reset link      |
 | `/reset-password`  | POST   | Change password using token      |
 | `/check-auth`      | GET    | Protected route, validates token |
 
-See `backend/controllers/auth.controller.js` for implementation details.
+## ⚙️ CI/CD Workflow
 
-### Features Overview
+The project includes a GitHub Actions workflow (`.github/workflows/docker-build.yml`) that triggers on every push to `main`:
 
-- JWT-based authentication with httpOnly cookies
-- Email verification using Nodemailer and Mailtrap
-- Password reset flow
-- Frontend built with React, Vite and Tailwind CSS
-- Protected dashboard page
+1. **Linting & Setup**: Prepares the Node.js environment.
+2. **Automated Testing**: Runs the Jest suite; if any test fails, the build stops.
+3. **Docker Build Check**: Verifies that the Dockerfile can successfully build the production image.
 
-### Deployment
+## Contributing
 
-In production the backend serves the compiled frontend from `backend/public`.
+Contributions are welcome! Currently looking to add:
 
-1. Set the environment variables in your hosting environment (e.g. Heroku, DigitalOcean, AWS).
-2. Build the frontend: `npm run build` from the root.
-3. Start the server: `npm run start` (or use a process manager like PM2).
-4. Ensure your MongoDB URI is reachable by the deployed service.
-
-You may also deploy frontend and backend separately if desired; just adjust `CLIENT_URL` accordingly.
-
----
-
-### Contributing
-
-Contributions are welcome! Feel free to open issues or pull requests. Some ideas:
-
-- Add social login (Google/Facebook)
-- Improve form validation and error handling
-- Add tests for backend endpoints
-
-Please follow the existing coding style and ensure linting passes.
-
----
+- Integration tests for API endpoints using Supertest.
+- Refactoring core services into an OOP-based Service Layer.
 
 Enjoy! 🚀
