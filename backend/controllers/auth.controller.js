@@ -59,6 +59,7 @@ export const signup = async (req, res) => {
       },
     });
   } catch (error) {
+    console.log("SIGNUP ERROR:", error.message);
     res.status(400).json({ success: false, message: error.message });
   }
 };
