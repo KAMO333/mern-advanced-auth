@@ -4,20 +4,18 @@ import { User } from "../models/user.model.js";
 import { connectTestDB, closeTestDB, clearTestDB } from "./setup.js";
 
 describe("Auth Integration - Signup Flow", () => {
-  // Give the setup 60 seconds
   beforeAll(async () => {
     await connectTestDB();
   }, 60000);
 
-  // Give the teardown 10 seconds
   afterAll(async () => {
     await closeTestDB();
-  }, 10000);
+  });
 
-  // Give the clear 10 seconds
-  afterEach(async () => {
+  // Change afterEach to beforeEach for a "Clean Room" strategy
+  beforeEach(async () => {
     await clearTestDB();
-  }, 10000);
+  });
 
   test("Should register a user and hash their password", async () => {
     const userData = {
