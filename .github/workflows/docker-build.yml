@@ -28,8 +28,9 @@ jobs:
         run: npm install
 
       - name: Run Tests
-        # This will now pass because it's running in the Bullseye environment
         run: npm test
+        env:
+          NODE_ENV: test
 
       - name: Build Docker image
         # We don't need Buildx here because we are verifying the Dockerfile
