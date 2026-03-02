@@ -9,25 +9,30 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # This tells GitHub to run all steps inside this specific container
+    container:
+      image: node:18-bullseye-slim
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18"
+      - name: Install legacy libraries
+        # These are required for MongoDB 4.4 to start in the cloud
+        run: |
+          apt-get update
+          apt-get install -y libcurl4 libssl1.1 liblzma5
+          rm -rf /var/lib/apt/lists/*
 
       - name: Install dependencies
         run: npm install
 
       - name: Run Tests
+        # This will now pass because it's running in the Bullseye environment
         run: npm test
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
       - name: Build Docker image
+        # We don't need Buildx here because we are verifying the Dockerfile
+        # can build in a standard environment
         run: |
           docker build -t auth-system-test .
