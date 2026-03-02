@@ -13,7 +13,6 @@ export const signup = async (req, res) => {
   const { email, password, name } = req.body;
 
   try {
-    console.log("NODE_ENV is:", process.env.NODE_ENV);
     if (!email || !password || !name) {
       throw new Error("All fields are required");
     }
@@ -59,7 +58,6 @@ export const signup = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log("SIGNUP ERROR:", error.message);
     res.status(400).json({ success: false, message: error.message });
   }
 };

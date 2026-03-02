@@ -1,4 +1,4 @@
-import { BrevoClient } from "@getbrevo/brevo"; // Standard for v4.x
+import { BrevoClient } from "@getbrevo/brevo";
 import {
   PASSWORD_RESET_REQUEST_TEMPLATE,
   PASSWORD_RESET_SUCCESS_TEMPLATE,

@@ -26,9 +26,8 @@ jobs:
           NODE_ENV: test
           JWT_SECRET: test-secret-key-for-ci
 
-  # NEW SEPARATE JOB: Verifies the Dockerfile builds correctly
   docker-verify:
-    needs: test # Only build if tests pass
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
