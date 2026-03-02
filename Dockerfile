@@ -1,13 +1,19 @@
-# Use Node 18 Alpine for a small, secure image
-FROM node:18-alpine
+# 1. Use Bullseye to get the right legacy library support
+FROM node:18-bullseye-slim
 
-# Set the working directory
+# 2. Install the exact libraries MongoDB 4.4 needs
+RUN apt-get update && apt-get install -y \
+    libcurl4 \
+    libssl1.1 \
+    liblzma5 \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-# Install production dependencies only
-RUN npm install --omit=dev
+# 3. Use 'npm install' to include devDependencies for Jest
+RUN npm install
 
 COPY . .
 

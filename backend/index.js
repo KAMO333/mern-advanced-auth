@@ -13,23 +13,25 @@ const PORT = process.env.PORT || 5000;
 const __dirname = path.resolve();
 
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
-
-app.use(express.json()); // allows us to parse incoming requests:req.body
-app.use(cookieParser()); // allows us to parse incoming cookies
+app.use(express.json());
+app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/frontend/dist")));
-
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
   });
 }
 
-app.listen(PORT, () => {
-  connectDB();
-  console.log("Server is running on port:", PORT);
-});
+// Only start the server and connect to the REAL DB if this file is run directly
+// This prevents port collisions and real DB connections during Jest tests
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    connectDB();
+    console.log("Server is running on port:", PORT);
+  });
+}
 
-// zKWcS9GywOaOrjMw
+export { app }; // Exporting for Supertest
