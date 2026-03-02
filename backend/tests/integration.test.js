@@ -1,7 +1,18 @@
-import request from "supertest";
-import { app } from "../index.js";
-import { User } from "../models/user.model.js";
-import { connectTestDB, closeTestDB, clearTestDB } from "./setup.js";
+import { jest } from "@jest/globals";
+
+// Must be BEFORE any dynamic imports of modules that use emails.js
+await jest.unstable_mockModule("../../backend/nodemailer/emails.js", () => ({
+  sendVerificationEmail: jest.fn().mockResolvedValue(undefined),
+  sendWelcomeEmail: jest.fn().mockResolvedValue(undefined),
+  sendPasswordResetEmail: jest.fn().mockResolvedValue(undefined),
+  sendResetSuccessEmail: jest.fn().mockResolvedValue(undefined),
+}));
+
+// Dynamic imports AFTER mock registration - this is critical
+const { app } = await import("../index.js");
+const { User } = await import("../models/user.model.js");
+const { connectTestDB, closeTestDB, clearTestDB } = await import("./setup.js");
+const request = (await import("supertest")).default;
 
 describe("Auth Integration - Signup Flow", () => {
   beforeAll(async () => {
@@ -12,7 +23,6 @@ describe("Auth Integration - Signup Flow", () => {
     await closeTestDB();
   });
 
-  // Change afterEach to beforeEach for a "Clean Room" strategy
   beforeEach(async () => {
     await clearTestDB();
   });
