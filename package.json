@@ -4,10 +4,11 @@
   "description": "",
   "main": "backend/index.js",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon backend/index.js",
+    "backend": "NODE_ENV=development nodemon backend/index.js",
+    "frontend": "npm run dev --prefix frontend",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
     "start": "NODE_ENV=production node backend/index.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand",
-    "test:local": "docker build -t auth-test . && docker run --rm auth-test npm test",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "repository": {
@@ -36,6 +37,7 @@
     "nodemailer": "^6.10.1"
   },
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "jest": "^30.2.0",
     "mongodb-memory-server": "^11.0.1",
     "nodemon": "^3.1.9",

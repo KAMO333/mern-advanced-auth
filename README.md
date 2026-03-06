@@ -20,71 +20,99 @@
 
 A full-stack MERN (MongoDB, Express, React, Node) Authentication system engineered with a production-grade workflow. It features secure JWT handling, automated email service integration, and a containerized deployment pipeline.
 
-### 🚀 Production-Grade Features
+### 🚀 Key Features
 
-- **Dockerized Infrastructure**: Entire application is containerized for environment parity across development and production.
-- **CI/CD Pipeline**: Integrated GitHub Actions to automate build checks and testing on every push to main — if any test fails, the deployment stops.
-- **Automated Unit Testing**: Robust test suite using Jest to verify JWT logic, password hashing, and core auth utilities.
-
----
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) (v18+ recommended)
-- [Docker](https://www.docker.com/) (for containerized execution)
-- A running MongoDB instance (local or cloud)
+- **Robust Auth Engine:** Secure JWT handling with Access & Refresh tokens via HTTP-only cookies.
+- **Email Verification:** Integration with Brevo/Nodemailer for account validation and password recovery.
+- **Dockerized Infrastructure:** Entire application is containerized for environment parity.
+- **CI/CD Pipeline:** Integrated GitHub Actions to automate testing on every push.
 
 ---
 
-### Configuration
+## 🛠️ Local Development Setup
 
-Create a `.env` file in the root directory with the following variables:
+Follow these steps to get the project running on your machine.
+
+### 1. Prerequisites
+
+- Node.js (v18+)
+- Docker (recommended for testing)
+- A MongoDB instance (local or Atlas)
+
+### 2. Clone and Install
 
 ```bash
-MONGO_URI=your_mongo_uri
+git clone https://github.com/your-username/mern-advanced-auth.git
+cd mern-advanced-auth
+
+# Install backend & frontend dependencies
+npm install
+cd frontend && npm install
+cd ..
+```
+
+### 3. Environment Configuration
+
+Create a `.env` file in the root directory:
+
+```env
+MONGO_URI=your_mongodb_uri
 PORT=5000
 JWT_SECRET=your_secret_key
 NODE_ENV=development
-BREVO_API_KEY=your-brevo-api-key
+BREVO_API_KEY=your_brevo_api_key
 CLIENT_URL=http://localhost:5173
 ```
 
----
+### 4. Run the Application
 
-## 🐳 Docker Execution
-
-Run the entire system in an isolated environment with a single command:
+Start the frontend and backend simultaneously with one command:
 
 ```bash
-# Build the image
-docker build -t auth-system .
-
-# Run the container
-docker run -p 5000:5000 --env-file .env auth-system
+npm run dev
 ```
+
+The app will be available at `http://localhost:5173`.
 
 ---
 
-## 🧪 Automated Testing
+## 🧪 Testing
 
-Verify the core authentication logic locally using Jest:
+We use a Dockerized testing strategy to ensure database isolation and environment consistency.
+
+#### Run Integration Tests
+
+This command builds a test container and runs the Jest suite against a dedicated MongoDB service:
+
+```bash
+docker compose -f docker-compose.test.yml up --build --abort-on-container-exit
+```
+
+#### Run Unit Tests Locally
 
 ```bash
 npm test
 ```
 
-Current tests cover: JWT Generation, Bcrypt Password Hashing, Email Format Validation, and Reset Token Integrity.
+---
+
+## 📂 Project Structure
+
+- `backend/controllers` — Logic for signup, login, and token validation.
+- `backend/middleware` — Route protection and Admin checks.
+- `backend/tests` — Jest unit and integration test suites.
+- `frontend/src/store` — Global state management using Zustand.
 
 ---
 
 ## Available Scripts
 
-| Script          | What it does                                                        |
-| --------------- | ------------------------------------------------------------------- |
-| `npm run dev`   | Starts both backend (nodemon) and frontend (Vite) in dev mode       |
-| `npm run start` | Starts the backend server in production mode                        |
-| `npm run test`  | Runs the Jest test suite with ESM support                           |
-| `npm run build` | Builds the React app and prepares the backend to serve static files |
+| Script          | What it does                                        |
+| --------------- | --------------------------------------------------- |
+| `npm run dev`   | Recommended: Starts Backend & Frontend concurrently |
+| `npm run test`  | Runs Jest tests with ESM support                    |
+| `npm run start` | Starts the production server                        |
+| `npm run build` | Builds the React app for production                 |
 
 ---
 

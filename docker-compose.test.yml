@@ -1,0 +1,15 @@
+services:
+  test-db:
+    image: mongo:4.4.18
+    ports:
+      - "27018:27017" # Shifted port to avoid conflict with local DB
+
+  test-runner:
+    build: .
+    environment:
+      - NODE_ENV=test
+      - MONGO_URI=mongodb://test-db:27017/auth_test
+      - JWT_SECRET=test_secret_123
+    depends_on:
+      - test-db
+    command: npm test
