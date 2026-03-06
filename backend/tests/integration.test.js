@@ -1,7 +1,7 @@
 import { jest } from "@jest/globals";
 
 // Must be BEFORE any dynamic imports of modules that use emails.js
-await jest.unstable_mockModule("../nodemailer/emails.js", () => ({
+await jest.unstable_mockModule("../mail/emails.js", () => ({
   sendVerificationEmail: jest.fn().mockResolvedValue(undefined),
   sendWelcomeEmail: jest.fn().mockResolvedValue(undefined),
   sendPasswordResetEmail: jest.fn().mockResolvedValue(undefined),

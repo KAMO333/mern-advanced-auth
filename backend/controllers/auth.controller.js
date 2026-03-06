@@ -6,7 +6,7 @@ import {
   sendWelcomeEmail,
   sendPasswordResetEmail,
   sendResetSuccessEmail,
-} from "../nodemailer/emails.js";
+} from "../mail/emails.ts";
 import { User } from "../models/user.model.js";
 
 export const signup = async (req, res) => {

@@ -4,12 +4,12 @@
   "description": "",
   "main": "backend/index.js",
   "scripts": {
-    "backend": "NODE_ENV=development nodemon backend/index.js",
+    "backend": "NODE_ENV=development tsx watch backend/index.ts",
     "frontend": "npm run dev --prefix frontend",
     "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
-    "start": "NODE_ENV=production node backend/index.js",
+    "start": "NODE_ENV=production node dist/index.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand",
-    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
+    "build": "tsc && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "repository": {
     "type": "git",
@@ -32,15 +32,24 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "mailtrap": "^3.4.0",
-    "mongoose": "^8.9.3",
-    "nodemailer": "^6.10.1"
+    "mongoose": "^8.9.3"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^25.3.5",
+    "@types/supertest": "^7.2.0",
     "concurrently": "^9.2.1",
     "jest": "^30.2.0",
     "mongodb-memory-server": "^11.0.1",
     "nodemon": "^3.1.9",
-    "supertest": "^7.2.2"
+    "supertest": "^7.2.2",
+    "ts-jest": "^29.4.6",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }

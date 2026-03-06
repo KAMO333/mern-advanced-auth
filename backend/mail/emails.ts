@@ -5,14 +5,20 @@ import {
   VERIFICATION_EMAIL_TEMPLATE,
   WELCOME_EMAIL_TEMPLATE,
 } from "./emailTemplates.js";
-import { sender } from "./nodemailer.config.js";
+import { sender } from "./brevo.config.js";
 
-// Initialize the single Brevo client
-const client = new BrevoClient({
-  apiKey: process.env.BREVO_API_KEY,
-});
+// Initialize the single Brevo client with explicit API key check
+const apiKey = process.env.BREVO_API_KEY;
+if (!apiKey) {
+  throw new Error("BREVO_API_KEY is not defined");
+}
 
-export const sendVerificationEmail = async (email, verificationToken) => {
+const client = new BrevoClient({ apiKey });
+
+export const sendVerificationEmail = async (
+  email: string,
+  verificationToken: string,
+): Promise<void> => {
   try {
     const result = await client.transactionalEmails.sendTransacEmail({
       subject: "Verify your email",
@@ -24,23 +30,26 @@ export const sendVerificationEmail = async (email, verificationToken) => {
         name: sender.name,
         email: sender.email,
       },
-      to: [{ email: email }],
+      to: [{ email }],
     });
 
-    console.log("Brevo API success:", JSON.stringify(result));
+    console.log("Brevo API verification success:", JSON.stringify(result));
   } catch (error) {
-    console.error("Brevo API error:", error);
+    console.error("Brevo API verification error:", error);
     throw new Error(`Error sending verification email: ${error}`);
   }
 };
 
-export const sendWelcomeEmail = async (email, name) => {
+export const sendWelcomeEmail = async (
+  email: string,
+  name: string,
+): Promise<void> => {
   try {
     const result = await client.transactionalEmails.sendTransacEmail({
       subject: "Welcome to Auth Company",
       htmlContent: WELCOME_EMAIL_TEMPLATE.replace(/{name}/g, name),
       sender: { name: sender.name, email: sender.email },
-      to: [{ email: email }],
+      to: [{ email }],
     });
     console.log("Welcome email sent successfully:", JSON.stringify(result));
   } catch (error) {
@@ -49,7 +58,10 @@ export const sendWelcomeEmail = async (email, name) => {
   }
 };
 
-export const sendPasswordResetEmail = async (email, resetURL) => {
+export const sendPasswordResetEmail = async (
+  email: string,
+  resetURL: string,
+): Promise<void> => {
   try {
     const result = await client.transactionalEmails.sendTransacEmail({
       subject: "Reset your password",
@@ -58,7 +70,7 @@ export const sendPasswordResetEmail = async (email, resetURL) => {
         resetURL,
       ),
       sender: { name: sender.name, email: sender.email },
-      to: [{ email: email }],
+      to: [{ email }],
     });
     console.log(
       "Password reset email sent successfully:",
@@ -70,13 +82,13 @@ export const sendPasswordResetEmail = async (email, resetURL) => {
   }
 };
 
-export const sendResetSuccessEmail = async (email) => {
+export const sendResetSuccessEmail = async (email: string): Promise<void> => {
   try {
     const result = await client.transactionalEmails.sendTransacEmail({
       subject: "Password Reset Successful",
       htmlContent: PASSWORD_RESET_SUCCESS_TEMPLATE,
       sender: { name: sender.name, email: sender.email },
-      to: [{ email: email }],
+      to: [{ email }],
     });
     console.log(
       "Reset success email sent successfully:",
