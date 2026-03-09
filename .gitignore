@@ -24,3 +24,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+coverage
+*.tsbuildinfo
+*.tgz   
+
+# Docker
+.docker
+# If you ever use local volumes for DB persistence during testing
+data/db
+# Coverage report artifacts
+.nyc_output

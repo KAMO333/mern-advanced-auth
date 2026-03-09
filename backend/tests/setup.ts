@@ -4,11 +4,17 @@ import mongoose from "mongoose";
 let mongoServer: MongoMemoryServer;
 
 export const connectTestDB = async (): Promise<void> => {
+  // Check if we are already connected to avoid re-initializing
+  if (mongoose.connection.readyState === 1) return;
+
   mongoServer = await MongoMemoryServer.create({
     binary: {
       version: "4.4.18",
       platform: "linux",
       arch: "x64",
+    },
+    instance: {
+      dbName: "auth_test",
     },
   });
   const uri = mongoServer.getUri();
