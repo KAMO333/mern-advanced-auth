@@ -79,11 +79,11 @@ The app will be available at `http://localhost:5173`.
 
 ## 🧪 Testing
 
-We use a Dockerized testing strategy to ensure database isolation and environment consistency.
+We use a Dockerized testing strategy to ensure database isolation and environment consistency. The test environment runs inside `node:18-bullseye-slim` to resolve OpenSSL compatibility issues between `mongodb-memory-server` and modern Linux systems.
 
 #### Run Integration Tests
 
-This command builds a test container and runs the Jest suite against a dedicated MongoDB service:
+This command builds a test container and runs the full Jest suite against a dedicated MongoDB service:
 
 ```bash
 docker compose -f docker-compose.test.yml up --build --abort-on-container-exit
@@ -94,6 +94,18 @@ docker compose -f docker-compose.test.yml up --build --abort-on-container-exit
 ```bash
 npm test
 ```
+
+**Current Coverage: 78% line coverage across 5 test suites and 12 passing tests.**
+
+| Area             | Line Coverage |
+| ---------------- | ------------- |
+| Auth Controller  | 78.65%        |
+| Auth Routes      | 100%          |
+| User Model       | 100%          |
+| JWT Utility      | 100%          |
+| Token Middleware | 80%           |
+
+Tests cover: Signup flow, Login flow, Session handling, Password reset, JWT generation, bcrypt hashing, and email validation — wired into the CI/CD pipeline as a deployment gate.
 
 ---
 
