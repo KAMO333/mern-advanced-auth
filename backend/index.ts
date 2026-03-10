@@ -26,22 +26,10 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static(path.join(__dirname, "/frontend/dist")));
-//   app.get("*", (req, res) => {
-//     res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
-//   });
-// }
-
 if (process.env.NODE_ENV === "production") {
-  const frontendPath = path.join(__dirname, "frontend", "dist");
-
-  // 1. Serve the static files
-  app.use(express.static(frontendPath));
-
-  // 2. The Catch-All for React Router
+  app.use(express.static(path.join(__dirname, "/frontend/dist")));
   app.get("*", (req, res) => {
-    res.sendFile(path.join(frontendPath, "index.html"));
+    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
   });
 }
 
