@@ -14,5 +14,5 @@
     "moduleDetection": "force"
   },
   "include": ["backend/**/*"],
-  "exclude": ["node_modules", "frontend", "dist"]
+  "exclude": ["node_modules", "frontend", "dist", "backend/tests/**/*"]
 }
