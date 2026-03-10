@@ -6,7 +6,7 @@ import {
   sendWelcomeEmail,
   sendPasswordResetEmail,
   sendResetSuccessEmail,
-} from "../mail/emails.ts";
+} from "../mail/emails.js";
 import { User } from "../models/user.model.js";
 
 export const signup = async (req, res) => {
