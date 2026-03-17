@@ -4,8 +4,12 @@ import mongoose from "mongoose";
 let mongoServer: MongoMemoryServer;
 
 export const connectTestDB = async (): Promise<void> => {
-  // Check if we are already connected to avoid re-initializing
   if (mongoose.connection.readyState === 1) return;
+
+  if (process.env.MONGO_URI) {
+    await mongoose.connect(process.env.MONGO_URI);
+    return;
+  }
 
   mongoServer = await MongoMemoryServer.create({
     binary: {

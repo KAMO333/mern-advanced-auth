@@ -9,22 +9,29 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container:
-      image: node:18-bullseye-slim
+    services:
+      mongodb:
+        image: mongo:4.4.18
+        ports:
+          - 27017:27017
+
     steps:
       - uses: actions/checkout@v4
-      - name: Install legacy libraries
-        run: |
-          apt-get update
-          apt-get install -y libcurl4 libssl1.1 liblzma5
-          rm -rf /var/lib/apt/lists/*
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
       - name: Install dependencies
         run: npm install
+
       - name: Run Tests
         run: npm test
         env:
           NODE_ENV: test
           JWT_SECRET: test-secret-key-for-ci
+          MONGO_URI: mongodb://localhost:27017/auth_test
 
   docker-verify:
     needs: test
