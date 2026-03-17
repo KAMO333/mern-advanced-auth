@@ -9,7 +9,7 @@
     "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
     "start": "NODE_ENV=production node dist/index.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand --coverage --no-cache",
-    "build": "tsc && npm install --prefix frontend && npm run build --prefix frontend"
+    "build": "tsc && npm install --prefix frontend --include=dev && npm run build --prefix frontend"
   },
   "repository": {
     "type": "git",
