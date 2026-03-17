@@ -31,7 +31,7 @@ jobs:
         env:
           NODE_ENV: test
           JWT_SECRET: test-secret-key-for-ci
-          MONGO_URI: mongodb://localhost:27017/auth_test
+          TEST_MONGO_URI: mongodb://localhost:27017/auth_test
 
   docker-verify:
     needs: test

@@ -6,8 +6,8 @@ let mongoServer: MongoMemoryServer;
 export const connectTestDB = async (): Promise<void> => {
   if (mongoose.connection.readyState === 1) return;
 
-  if (process.env.MONGO_URI) {
-    await mongoose.connect(process.env.MONGO_URI);
+  if (process.env.TEST_MONGO_URI) {
+    await mongoose.connect(process.env.TEST_MONGO_URI);
     return;
   }
 

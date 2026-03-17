@@ -79,21 +79,15 @@ The app will be available at `http://localhost:5173`.
 
 ## 🧪 Testing
 
-We use a Dockerized testing strategy to ensure database isolation and environment consistency. The test environment runs inside `node:18-bullseye-slim` to resolve OpenSSL compatibility issues between `mongodb-memory-server` and modern Linux systems.
+Tests run exclusively inside Docker to ensure a consistent environment and prevent any risk of connecting to a real database. **Never run `npm test` directly** — always use the Docker command below.
 
-#### Run Integration Tests
-
-This command builds a test container and runs the full Jest suite against a dedicated MongoDB service:
+#### Run Tests
 
 ```bash
 docker compose -f docker-compose.test.yml up --build --abort-on-container-exit
 ```
 
-#### Run Unit Tests Locally
-
-```bash
-npm test
-```
+This spins up a dedicated MongoDB 4.4.18 container, runs the full Jest suite against it, and tears everything down on completion. No data is ever written to your real database.
 
 **Current Coverage: 78% line coverage across 5 test suites and 12 passing tests.**
 

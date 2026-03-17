@@ -10,7 +10,7 @@ services:
       - ./coverage:/usr/src/app/coverage
     environment:
       - NODE_ENV=test
-      - MONGO_URI=mongodb://test-db:27017/auth_test
+      - TEST_MONGO_URI=mongodb://test-db:27017/auth_test
       - JWT_SECRET=test_secret_123
     depends_on:
       - test-db
